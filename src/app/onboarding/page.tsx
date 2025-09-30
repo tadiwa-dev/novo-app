@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { createUserProfile } from '@/lib/firebase';
 import { Logo } from '@/components/Logo';
 import { InputDebug } from '@/components/InputDebug';
+import { SimpleInputTest } from '@/components/SimpleInputTest';
 
 export default function OnboardingPage() {
   const [nickname, setNickname] = useState('');
@@ -126,8 +127,9 @@ export default function OnboardingPage() {
           </div>
 
 
-          {/* Debug Component */}
+          {/* Debug Components */}
           <InputDebug />
+          <SimpleInputTest />
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
