@@ -7,9 +7,7 @@ import {
   signInWithPopup, 
   GoogleAuthProvider, 
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  deleteUser
+  createUserWithEmailAndPassword
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot, updateDoc, increment } from 'firebase/firestore';
 
