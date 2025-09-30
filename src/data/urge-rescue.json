@@ -1,0 +1,63 @@
+{
+  "scriptures": [
+    {
+      "text": "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear. But when you are tempted, he will also provide a way out so that you can endure it.",
+      "reference": "1 Corinthians 10:13"
+    },
+    {
+      "text": "Submit yourselves, then, to God. Resist the devil, and he will flee from you.",
+      "reference": "James 4:7"
+    },
+    {
+      "text": "I can do all this through him who gives me strength.",
+      "reference": "Philippians 4:13"
+    },
+    {
+      "text": "The Lord is my strength and my shield; my heart trusts in him, and he helps me. My heart leaps for joy, and with my song I praise him.",
+      "reference": "Psalm 28:7"
+    },
+    {
+      "text": "But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.",
+      "reference": "Isaiah 40:31"
+    },
+    {
+      "text": "Cast all your anxiety on him because he cares for you.",
+      "reference": "1 Peter 5:7"
+    },
+    {
+      "text": "The Lord is close to the brokenhearted and saves those who are crushed in spirit.",
+      "reference": "Psalm 34:18"
+    },
+    {
+      "text": "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future.",
+      "reference": "Jeremiah 29:11"
+    }
+  ],
+  "prayers": [
+    "Lord, I'm struggling right now. Please give me Your strength to resist this temptation. Help me to remember who I am in You and the freedom You have for me.",
+    "Father, I feel weak and vulnerable. Please be my strength and shield. Help me to turn to You instead of my old ways.",
+    "Jesus, I need You right now. Please fill me with Your peace and help me to make the right choice. I trust in Your power to help me overcome.",
+    "Holy Spirit, please guide me away from this temptation. Give me the wisdom to see the way out that You have provided.",
+    "God, I'm feeling overwhelmed. Please remind me of Your love and help me to find my strength in You alone."
+  ],
+  "worshipPlaylists": [
+    {
+      "title": "Peace & Strength",
+      "type": "youtube",
+      "url": "https://www.youtube.com/playlist?list=PLH5SQNiXZCQH7Yqj8j8j8j8j8j8j8j8j8",
+      "description": "Songs of peace and strength for difficult moments"
+    },
+    {
+      "title": "Worship for Freedom",
+      "type": "spotify",
+      "url": "https://open.spotify.com/playlist/37i9dQZF1DX0XUsuxWHRQd",
+      "description": "Uplifting worship music to help you focus on God"
+    },
+    {
+      "title": "Healing & Restoration",
+      "type": "youtube",
+      "url": "https://www.youtube.com/playlist?list=PLH5SQNiXZCQH7Yqj8j8j8j8j8j8j8j8j9",
+      "description": "Songs about God's healing and restoration power"
+    }
+  ]
+}
