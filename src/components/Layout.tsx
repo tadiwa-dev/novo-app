@@ -5,6 +5,7 @@ import { Navbar } from './Navbar';
 import { UrgeRescue } from './UrgeRescue';
 import { LogoutDialog } from './LogoutDialog';
 import { SignInPopup } from './SignInPopup';
+import { PWAInstallButton } from './PWAInstallButton';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface LayoutProps {
@@ -70,6 +71,7 @@ export function Layout({ children }: LayoutProps) {
         isOpen={showSignInPopup} 
         onClose={() => setShowSignInPopup(false)} 
       />
+      <PWAInstallButton />
       {/* Debug components removed for production */}
     </div>
   );

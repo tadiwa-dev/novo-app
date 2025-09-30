@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { PWAProvider } from "@/components/PWAProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,16 +18,30 @@ export const metadata: Metadata = {
   title: "Novo - Freedom Journey",
   description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
   manifest: '/site.webmanifest',
+  themeColor: '#6366f1',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' }
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
     ],
     shortcut: '/favicon.ico'
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Novo'
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default'
   }
 };
 
@@ -47,9 +62,11 @@ export default function RootLayout({
                 backgroundImage: `radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)`
               }}></div>
             </div>
-        <Providers>
-          {children}
-        </Providers>
+        <PWAProvider>
+          <Providers>
+            {children}
+          </Providers>
+        </PWAProvider>
       </body>
     </html>
   );
