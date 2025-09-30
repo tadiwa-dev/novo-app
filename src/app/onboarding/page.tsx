@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { createUserProfile } from '@/lib/firebase';
 import { Logo } from '@/components/Logo';
+import { InputDebug } from '@/components/InputDebug';
 
 export default function OnboardingPage() {
   const [nickname, setNickname] = useState('');
@@ -29,6 +30,8 @@ export default function OnboardingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted, nickname:', nickname);
+    
     if (!nickname.trim()) {
       setError('Please enter a nickname');
       return;
@@ -123,6 +126,9 @@ export default function OnboardingPage() {
           </div>
 
 
+          {/* Debug Component */}
+          <InputDebug />
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -138,6 +144,8 @@ export default function OnboardingPage() {
                   console.log('Input changed:', e.target.value);
                   setNickname(e.target.value);
                 }}
+                onFocus={() => console.log('Input focused')}
+                onBlur={() => console.log('Input blurred')}
                 placeholder="Enter your nickname"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 disabled={isLoading}
