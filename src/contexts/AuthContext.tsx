@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import { onAuthStateChange, signInAnonymous, signInWithGoogle, signInWithEmail } from '@/lib/firebase';
+import { onAuthStateChange, signInAnonymous, signInWithGoogle, signInWithEmail, createUserWithEmail } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
@@ -20,7 +20,8 @@ interface AuthContextType {
   loading: boolean;
   signIn: () => Promise<User>;
   signInWithGoogle: () => Promise<User>;
-  signInWithEmail: (email?: string, password?: string) => Promise<User>;
+  signInWithEmail: (email: string, password: string) => Promise<User>;
+  createUserWithEmail: (email: string, password: string) => Promise<User>;
   logout: () => Promise<void>;
   setUserProfile: (profile: UserProfile) => void;
 }
@@ -36,10 +37,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChange(async (user) => {
       setUser(user);
       if (user) {
-        // Load user profile from Firestore
-        const { getUserProfile } = await import('@/lib/firebase');
-        const profile = await getUserProfile(user.uid);
-        setUserProfile(profile as UserProfile | null);
+        try {
+          // Load user profile from Firestore
+          const { getUserProfile } = await import('@/lib/firebase');
+          const profile = await getUserProfile(user.uid);
+          setUserProfile(profile as UserProfile | null);
+        } catch (error) {
+          console.warn('Firebase connection blocked - using local storage fallback');
+          // Fallback to local storage if Firebase is blocked
+          const localProfile = localStorage.getItem(`userProfile_${user.uid}`);
+          if (localProfile) {
+            setUserProfile(JSON.parse(localProfile));
+          }
+        }
       } else {
         setUserProfile(null);
       }
@@ -69,12 +79,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const handleEmailSignIn = async (email?: string, password?: string): Promise<User> => {
+  const handleEmailSignIn = async (email: string, password: string): Promise<User> => {
     try {
       const result = await signInWithEmail(email, password);
       return result.user;
     } catch (error) {
       console.error('Error signing in with email:', error);
+      throw error;
+    }
+  };
+
+  const handleCreateUserWithEmail = async (email: string, password: string): Promise<User> => {
+    try {
+      const result = await createUserWithEmail(email, password);
+      return result.user;
+    } catch (error) {
+      console.error('Error creating user with email:', error);
       throw error;
     }
   };
@@ -97,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signInWithGoogle: handleGoogleSignIn,
     signInWithEmail: handleEmailSignIn,
+    createUserWithEmail: handleCreateUserWithEmail,
     logout,
     setUserProfile
   };

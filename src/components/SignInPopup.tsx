@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SignInPopupProps {
@@ -11,7 +12,8 @@ interface SignInPopupProps {
 export function SignInPopup({ isOpen, onClose }: SignInPopupProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signInWithGoogle, signInWithEmail } = useAuth();
+  const { signInWithGoogle, signInWithEmail, userProfile } = useAuth();
+  const router = useRouter();
 
   const handleGoogleSignIn = async () => {
     console.log('Google sign-in clicked');
@@ -28,19 +30,10 @@ export function SignInPopup({ isOpen, onClose }: SignInPopupProps) {
     }
   };
 
-  const handleEmailSignIn = async () => {
-    console.log('Email sign-in clicked');
-    setIsLoading(true);
-    setError('');
-    try {
-      await signInWithEmail();
-      onClose();
-    } catch (error) {
-      console.error('Email sign-in failed:', error);
-      setError(error instanceof Error ? error.message : 'Email sign-in failed');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleEmailSignIn = () => {
+    // Navigate to onboarding page for email/password sign-in
+    router.push('/onboarding');
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -59,9 +52,20 @@ export function SignInPopup({ isOpen, onClose }: SignInPopupProps) {
 
         {/* Header */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Save Your Progress</h2>
+          <div className="text-4xl mb-3">🎉</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            {userProfile?.currentDay === 3 
+              ? "Great Progress!" 
+              : userProfile?.currentDay === 8 
+              ? "Amazing Commitment!" 
+              : "Keep Going Strong!"}
+          </h2>
           <p className="text-gray-600 text-sm">
-            Sign in to save your journey progress and access it from any device
+            {userProfile?.currentDay === 3 
+              ? "You've completed 2 days! Sign in to save your progress and never lose your journey."
+              : userProfile?.currentDay === 8 
+              ? "You've completed a full week! Create an account to track your amazing progress."
+              : "Sign in to save your journey progress and access it from any device."}
           </p>
         </div>
 
@@ -104,8 +108,19 @@ export function SignInPopup({ isOpen, onClose }: SignInPopupProps) {
           </button>
         </div>
 
+        {/* Maybe Later Button */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-sm font-medium"
+            disabled={isLoading}
+          >
+            Maybe Later
+          </button>
+        </div>
+
         {/* Footer */}
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <p className="text-gray-500 text-xs">
             Your progress will be saved securely and synced across all your devices
           </p>

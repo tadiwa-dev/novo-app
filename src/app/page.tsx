@@ -135,9 +135,13 @@ export default function Home() {
             {currentDay < 14 && (
               <button
                 onClick={() => {
-                  // Close the completion dialog and show the next day
+                  // Close the completion dialog and refresh to show the next day
+                  // The progress was already updated in handleComplete
                   setIsCompleted(false);
                   setCurrentCardIndex(0);
+                  setReflection('');
+                  // Force a page refresh to load the new day
+                  window.location.reload();
                 }}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
               >

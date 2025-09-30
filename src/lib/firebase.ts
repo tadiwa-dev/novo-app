@@ -55,55 +55,72 @@ export const signInWithGoogle = async () => {
   return await signInWithPopup(auth, googleProvider);
 };
 
-export const signInWithEmail = async (email?: string, password?: string) => {
+export const signInWithEmail = async (email: string, password: string) => {
   if (!email || !password) {
-    // For now, we'll use a simple prompt. In a real app, you'd have a proper form
-    const emailInput = prompt('Enter your email:');
-    const passwordInput = prompt('Enter your password:');
-    
-    if (!emailInput || !passwordInput) {
-      throw new Error('Email and password are required');
-    }
-    
-    try {
-      return await signInWithEmailAndPassword(auth, emailInput, passwordInput);
-    } catch (error: unknown) {
-      if (error && typeof error === 'object' && 'code' in error && error.code === 'auth/user-not-found') {
-        // User doesn't exist, create account
-        return await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
-      }
-      throw error;
-    }
+    throw new Error('Email and password are required');
   }
   
   try {
     return await signInWithEmailAndPassword(auth, email, password);
   } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'code' in error && error.code === 'auth/user-not-found') {
-      // User doesn't exist, create account
-      return await createUserWithEmailAndPassword(auth, email, password);
-    }
-    throw error;
+    throw error; // Let the calling component handle the error
+  }
+};
+
+export const createUserWithEmail = async (email: string, password: string) => {
+  if (!email || !password) {
+    throw new Error('Email and password are required');
+  }
+  
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error: unknown) {
+    throw error; // Let the calling component handle the error
   }
 };
 
 // Firestore functions
 export const createUserProfile = async (userId: string, nickname: string, handle: string) => {
-  const userRef = doc(db, 'users', userId);
-  await setDoc(userRef, {
-    nickname,
-    handle,
-    createdAt: new Date(),
-    currentDay: 1,
-    completedDays: [],
-    badges: []
-  });
+  try {
+    const userRef = doc(db, 'users', userId);
+    const profileData = {
+      nickname,
+      handle,
+      createdAt: new Date(),
+      currentDay: 1,
+      completedDays: [],
+      badges: []
+    };
+    await setDoc(userRef, profileData);
+    
+    // Also save to local storage as backup
+    localStorage.setItem(`userProfile_${userId}`, JSON.stringify(profileData));
+  } catch (error) {
+    console.warn('Firebase blocked - saving profile to local storage only');
+    // Fallback to local storage if Firebase is blocked
+    const profileData = {
+      nickname,
+      handle,
+      createdAt: new Date(),
+      currentDay: 1,
+      completedDays: [],
+      badges: []
+    };
+    localStorage.setItem(`userProfile_${userId}`, JSON.stringify(profileData));
+  }
 };
 
 export const getUserProfile = async (userId: string) => {
-  const userRef = doc(db, 'users', userId);
-  const userSnap = await getDoc(userRef);
-  return userSnap.exists() ? userSnap.data() : null;
+  try {
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+    return userSnap.exists() ? userSnap.data() : null;
+  } catch (error) {
+    console.warn('Firebase blocked - loading profile from local storage');
+    // Fallback to local storage if Firebase is blocked
+    const localProfile = localStorage.getItem(`userProfile_${userId}`);
+    return localProfile ? JSON.parse(localProfile) : null;
+  }
 };
 
 export const updateUserProgress = async (userId: string, day: number) => {
