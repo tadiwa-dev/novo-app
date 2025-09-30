@@ -69,7 +69,7 @@ export function LogoutDialog({ isOpen, onClose }: LogoutDialogProps) {
           <div className="text-4xl mb-4">🚪</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Logout Options</h2>
           <p className="text-gray-600">
-            Choose how you'd like to logout
+            Choose how you&apos;d like to logout
           </p>
         </div>
         

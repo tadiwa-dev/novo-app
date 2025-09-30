@@ -6,10 +6,6 @@ import { UrgeRescue } from './UrgeRescue';
 import { LogoutDialog } from './LogoutDialog';
 import { SignInPopup } from './SignInPopup';
 import { useAuth } from '@/contexts/AuthContext';
-import { TestButtons } from './TestButtons';
-import { SimpleInputTest } from './SimpleInputTest';
-import { InputTest } from './InputTest';
-import { HTMLInputTest } from './HTMLInputTest';
 
 interface LayoutProps {
   children: React.ReactNode;

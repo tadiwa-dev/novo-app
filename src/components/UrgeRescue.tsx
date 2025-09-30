@@ -37,7 +37,7 @@ export function UrgeRescue() {
           <div className="bg-blue-50 p-4 rounded-lg">
             <h3 className="font-semibold text-blue-800 mb-2">Scripture for Strength</h3>
             <p className="text-blue-700 italic">
-              "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear. But when you are tempted, he will also provide a way out so that you can endure it."
+              &quot;No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear. But when you are tempted, he will also provide a way out so that you can endure it.&quot;
             </p>
             <p className="text-blue-600 text-sm mt-2">- 1 Corinthians 10:13</p>
           </div>
@@ -45,7 +45,7 @@ export function UrgeRescue() {
           <div className="bg-purple-50 p-4 rounded-lg">
             <h3 className="font-semibold text-purple-800 mb-2">Quick Prayer</h3>
             <p className="text-purple-700">
-              "Lord, I'm struggling right now. Please give me Your strength to resist this temptation. Help me to remember who I am in You and the freedom You have for me. Amen."
+              &quot;Lord, I&apos;m struggling right now. Please give me Your strength to resist this temptation. Help me to remember who I am in You and the freedom You have for me. Amen.&quot;
             </p>
           </div>
 

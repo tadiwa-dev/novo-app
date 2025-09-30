@@ -11,7 +11,7 @@ import {
   signOut,
   deleteUser
 } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot, updateDoc, increment, deleteDoc, getDocs, where, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot, updateDoc, increment } from 'firebase/firestore';
 
 const firebaseConfig = {
   // These will be replaced with actual config values
@@ -51,7 +51,7 @@ export const signInWithEmail = async (email?: string, password?: string) => {
     
     try {
       return await signInWithEmailAndPassword(auth, emailInput, passwordInput);
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error.code === 'auth/user-not-found') {
         // User doesn't exist, create account
         return await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
@@ -62,7 +62,7 @@ export const signInWithEmail = async (email?: string, password?: string) => {
   
   try {
     return await signInWithEmailAndPassword(auth, email, password);
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error.code === 'auth/user-not-found') {
       // User doesn't exist, create account
       return await createUserWithEmailAndPassword(auth, email, password);
@@ -113,7 +113,7 @@ export const saveJournalEntry = async (userId: string, day: number, reflection: 
   });
 };
 
-export const getJournalEntries = (userId: string, callback: (entries: any[]) => void) => {
+export const getJournalEntries = (userId: string, callback: (entries: unknown[]) => void) => {
   const q = query(
     collection(db, 'journal'),
     orderBy('createdAt', 'desc')
@@ -139,7 +139,7 @@ export const addPrayerRequest = async (userId: string, userHandle: string, reque
   });
 };
 
-export const getPrayerRequests = (callback: (prayers: any[]) => void) => {
+export const getPrayerRequests = (callback: (prayers: unknown[]) => void) => {
   const q = query(
     collection(db, 'prayers'),
     orderBy('createdAt', 'desc')
