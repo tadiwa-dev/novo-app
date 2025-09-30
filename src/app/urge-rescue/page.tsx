@@ -56,7 +56,7 @@ export default function UrgeRescuePage() {
             Urge Rescue
           </h1>
           <p className="text-gray-600">
-            You&apos;re not alone. God is with you in this moment.
+            You're not alone. God is with you in this moment.
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default function UrgeRescuePage() {
             </button>
           </div>
           <blockquote className="text-blue-700 italic text-lg leading-relaxed mb-3">
-            &quot;{scripture.text}&quot;
+            "{scripture.text}"
           </blockquote>
           <p className="text-blue-600 font-medium">— {scripture.reference}</p>
         </div>
@@ -125,7 +125,7 @@ export default function UrgeRescuePage() {
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
                 <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                <p className="text-gray-700">Take 3 deep breaths and focus on God&apos;s presence</p>
+                <p className="text-gray-700">Take 3 deep breaths and focus on God's presence</p>
               </div>
               <div className="flex items-start space-x-3">
                 <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
@@ -157,7 +157,7 @@ export default function UrgeRescuePage() {
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
           <h2 className="text-lg font-semibold text-red-800 mb-4">🆘 Need More Help?</h2>
           <p className="text-red-700 mb-4">
-            If you&apos;re struggling and need immediate support, don&apos;t hesitate to reach out:
+            If you're struggling and need immediate support, don't hesitate to reach out:
           </p>
           <div className="space-y-2">
             <p className="text-red-700">
@@ -176,7 +176,7 @@ export default function UrgeRescuePage() {
               You Are Stronger Than This Moment 💪
             </h3>
             <p className="text-gray-600">
-              &quot;I can do all this through him who gives me strength.&quot; - Philippians 4:13
+              "I can do all this through him who gives me strength." - Philippians 4:13
             </p>
             <p className="text-gray-600 mt-2">
               This feeling will pass. You are loved, you are valued, and you are not alone.

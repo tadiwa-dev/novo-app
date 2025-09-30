@@ -108,20 +108,20 @@ export default function Home() {
               Day {currentDay} Completed!
             </h1>
             <p className="text-gray-600 text-base">
-              Great job! You&apos;ve taken another step forward in your journey.
+              Great job! You've taken another step forward in your journey.
             </p>
           </div>
 
           <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">What&apos;s Next?</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">What's Next?</h2>
             <p className="text-gray-700 mb-4">
               {currentDay < 14 
                 ? `Come back tomorrow to unlock Day ${currentDay + 1} and continue your journey to freedom.`
-                : &quot;Congratulations! You&apos;ve completed this week. More content will be available soon.&quot;
+                : "Congratulations! You've completed this week. More content will be available soon."
               }
             </p>
             <p className="text-gray-600 text-sm">
-              &quot;The Lord will guide you always; he will satisfy your needs in a sun-scorched land and will strengthen your frame.&quot; - Isaiah 58:11
+              "The Lord will guide you always; he will satisfy your needs in a sun-scorched land and will strengthen your frame." - Isaiah 58:11
             </p>
           </div>
 
@@ -239,7 +239,7 @@ export default function Home() {
                     </div>
                     <h2 className="text-xl font-bold text-gray-900">Scripture</h2>
                   </div>
-                  <p className="text-blue-700 italic text-base leading-relaxed mb-2">&quot;{day.verse}&quot;</p>
+                  <p className="text-blue-700 italic text-base leading-relaxed mb-2">"{day.verse}"</p>
                   <p className="text-blue-600 font-semibold">— {day.verseReference}</p>
                 </div>
               </div>
