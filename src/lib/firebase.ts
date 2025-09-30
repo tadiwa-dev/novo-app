@@ -137,7 +137,7 @@ export const getJournalEntries = (userId: string, callback: (entries: JournalEnt
   
   return onSnapshot(q, (snapshot) => {
     const entries = snapshot.docs
-      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .map(doc => ({ id: doc.id, ...doc.data() } as JournalEntry))
       .filter(entry => entry.userId === userId);
     callback(entries);
   });
@@ -162,7 +162,7 @@ export const getPrayerRequests = (callback: (prayers: PrayerRequest[]) => void) 
   );
   
   return onSnapshot(q, (snapshot) => {
-    const prayers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const prayers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PrayerRequest));
     callback(prayers);
   });
 };
