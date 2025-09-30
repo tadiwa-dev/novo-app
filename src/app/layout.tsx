@@ -16,6 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Novo - Freedom Journey",
   description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
+  manifest: '/site.webmanifest',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
