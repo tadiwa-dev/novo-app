@@ -24,12 +24,12 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
   }
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm border-b border-blue-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-blue-200 dark:border-gray-700 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo */}
           <Link href="/">
-            <Logo size="md" showText={true} />
+            <Logo size="sm" showText={false} />
           </Link>
 
           {/* Navigation Items */}
@@ -40,13 +40,13 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50'
                   }`}
                 >
-                  <span>{item.icon}</span>
+                  <span className="text-sm sm:text-base">{item.icon}</span>
                   <span className="hidden sm:inline">{item.name}</span>
                 </Link>
               );
@@ -55,17 +55,18 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
 
           {/* User Info & Logout */}
           {userProfile && (
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hidden sm:block">
                 <span className="font-medium">{userProfile.nickname}</span>
-                <span className="text-gray-400 ml-1">#{userProfile.handle}</span>
+                <span className="text-gray-400 dark:text-gray-500 ml-1">#{userProfile.handle}</span>
               </div>
               <button
                 onClick={onLogoutClick}
-                className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs sm:text-sm font-medium transition-colors"
                 title="Logout"
               >
-                Logout
+                <span className="hidden sm:inline">Logout</span>
+                <span className="sm:hidden">🚪</span>
               </button>
             </div>
           )}
