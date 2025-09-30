@@ -11,6 +11,24 @@ import {
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot, updateDoc, increment } from 'firebase/firestore';
 
+interface JournalEntry {
+  id: string;
+  userId: string;
+  day: number;
+  reflection: string;
+  createdAt: any;
+}
+
+interface PrayerRequest {
+  id: string;
+  userId: string;
+  nickname: string;
+  handle: string;
+  request: string;
+  prayedCount: number;
+  createdAt: any;
+}
+
 const firebaseConfig = {
   // These will be replaced with actual config values
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -111,7 +129,7 @@ export const saveJournalEntry = async (userId: string, day: number, reflection: 
   });
 };
 
-export const getJournalEntries = (userId: string, callback: (entries: unknown[]) => void) => {
+export const getJournalEntries = (userId: string, callback: (entries: JournalEntry[]) => void) => {
   const q = query(
     collection(db, 'journal'),
     orderBy('createdAt', 'desc')
@@ -137,7 +155,7 @@ export const addPrayerRequest = async (userId: string, userHandle: string, reque
   });
 };
 
-export const getPrayerRequests = (callback: (prayers: unknown[]) => void) => {
+export const getPrayerRequests = (callback: (prayers: PrayerRequest[]) => void) => {
   const q = query(
     collection(db, 'prayers'),
     orderBy('createdAt', 'desc')
