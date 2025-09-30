@@ -18,8 +18,6 @@ export const metadata: Metadata = {
   title: "Novo - Freedom Journey",
   description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
   manifest: '/site.webmanifest',
-  themeColor: '#6366f1',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -43,6 +41,14 @@ export const metadata: Metadata = {
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'default'
   }
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#6366f1'
 };
 
 export default function RootLayout({
