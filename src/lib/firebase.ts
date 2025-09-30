@@ -50,7 +50,7 @@ export const signInWithEmail = async (email?: string, password?: string) => {
     try {
       return await signInWithEmailAndPassword(auth, emailInput, passwordInput);
     } catch (error: unknown) {
-      if (error.code === 'auth/user-not-found') {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'auth/user-not-found') {
         // User doesn't exist, create account
         return await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
       }
@@ -61,7 +61,7 @@ export const signInWithEmail = async (email?: string, password?: string) => {
   try {
     return await signInWithEmailAndPassword(auth, email, password);
   } catch (error: unknown) {
-    if (error.code === 'auth/user-not-found') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'auth/user-not-found') {
       // User doesn't exist, create account
       return await createUserWithEmailAndPassword(auth, email, password);
     }
