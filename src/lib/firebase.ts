@@ -16,7 +16,7 @@ interface JournalEntry {
   userId: string;
   day: number;
   reflection: string;
-  createdAt: any;
+  createdAt: Date | { seconds: number; nanoseconds: number };
 }
 
 interface PrayerRequest {
@@ -26,7 +26,7 @@ interface PrayerRequest {
   handle: string;
   request: string;
   prayedCount: number;
-  createdAt: any;
+  createdAt: Date | { seconds: number; nanoseconds: number };
 }
 
 const firebaseConfig = {
