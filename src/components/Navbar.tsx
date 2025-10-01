@@ -8,6 +8,7 @@ import { Logo } from './Logo';
 const navItems = [
   { name: 'Home', href: '/', icon: '🏠' },
   { name: 'Urge Rescue', href: '/urge-rescue', icon: '🚨' },
+  { name: 'Donate', href: '/donate', icon: '💝' },
 ];
 
 interface NavbarProps {
