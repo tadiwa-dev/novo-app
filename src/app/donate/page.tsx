@@ -5,7 +5,7 @@ import { Layout } from '@/components/Layout';
 
 export default function DonatePage() {
   const [amount, setAmount] = useState<string>('5');
-  const [currency, setCurrency] = useState<string>('ZWL');
+  const [currency, setCurrency] = useState<string>('USD');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
@@ -57,14 +57,12 @@ export default function DonatePage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Currency</label>
-            <select
+            <input
               value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="ZWL">ZWL</option>
-              <option value="USD">USD</option>
-            </select>
+              readOnly
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-800 dark:text-gray-100"
+            />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Only USD is supported at this time.</p>
           </div>
 
           <button

@@ -383,6 +383,16 @@ export default function Home() {
               </div>
             )}
           </div>
+
+          {/* Donate CTA */}
+          <div className="max-w-2xl mx-auto mt-6">
+            <a
+              href="/donate"
+              className="block w-full text-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-semibold text-base hover:shadow-xl transition-all duration-300"
+            >
+              Donate
+            </a>
+          </div>
         </div>
     </div>
     </Layout>

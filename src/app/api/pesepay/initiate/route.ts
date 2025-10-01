@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
     const amount = parseNumber(body.amount);
-    const currency = (body.currencyCode || 'ZWL') as string;
+    const currency = 'USD' as const; // Force USD only for now
     const reason = (body.reason || 'Donation') as string;
 
     if (!amount || amount <= 0) {
