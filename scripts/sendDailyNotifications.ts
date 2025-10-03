@@ -37,7 +37,7 @@ async function main() {
     return;
   }
 
-  const message = {
+  const message: admin.messaging.MulticastMessage = {
     notification: {
       title: 'Your daily Novo reminder',
       body: "Don't forget to complete today's reflection — one small step.",
@@ -46,11 +46,19 @@ async function main() {
     android: {
       priority: 'high'
     }
-  } as admin.messaging.MulticastMessage;
+  };
 
-  const res = await admin.messaging().sendMulticast(message);
-  console.log('Sent notifications:', res.successCount, 'success,', res.failureCount, 'failure');
-  if (res.failureCount > 0) console.log('Responses:', res.responses);
+  // TypeScript sometimes fails to recognize sendMulticast, so fallback to any if needed
+  const messaging: any = admin.messaging();
+  const res = await (messaging.sendMulticast ? messaging.sendMulticast(message) : messaging.sendToDevice(tokens, message.notification));
+  if (res.successCount !== undefined) {
+    console.log('Sent notifications:', res.successCount, 'success,', res.failureCount, 'failure');
+    if (res.failureCount > 0) console.log('Responses:', res.responses);
+  } else {
+    // sendToDevice fallback result
+    console.log('Sent notifications (sendToDevice fallback):', res.success.length, 'success,', res.failure.length, 'failure');
+    if (res.failure.length > 0) console.log('Responses:', res.results);
+  }
 }
 
 main().catch(err => {
