@@ -228,12 +228,12 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-500 transform ${
                   currentCardIndex === 0 
                     ? 'translate-x-0 translate-y-0 rotate-0 z-10' 
-                    : 'translate-x-4 translate-y-4 rotate-2 z-0'
+                    : 'translate-x-2 translate-y-2 rotate-1 z-0'
                 }`}
                 style={{ 
                   transform: currentCardIndex === 0 
                     ? 'translateX(0) translateY(0) rotate(0deg)' 
-                    : `translateX(${4 + (3 - currentCardIndex) * 2}px) translateY(${4 + (3 - currentCardIndex) * 2}px) rotate(${2 + (3 - currentCardIndex) * 0.5}deg)`
+                    : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
                 <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 dark:from-blue-900/90 dark:to-indigo-900/90 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
@@ -253,12 +253,12 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-500 transform ${
                   currentCardIndex === 1 
                     ? 'translate-x-0 translate-y-0 rotate-0 z-10' 
-                    : 'translate-x-4 translate-y-4 rotate-2 z-0'
+                    : 'translate-x-2 translate-y-2 rotate-1 z-0'
                 }`}
                 style={{ 
                   transform: currentCardIndex === 1 
                     ? 'translateX(0) translateY(0) rotate(0deg)' 
-                    : `translateX(${4 + (3 - currentCardIndex) * 2}px) translateY(${4 + (3 - currentCardIndex) * 2}px) rotate(${2 + (3 - currentCardIndex) * 0.5}deg)`
+                    : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
@@ -279,12 +279,12 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-500 transform ${
                   currentCardIndex === 2 
                     ? 'translate-x-0 translate-y-0 rotate-0 z-10' 
-                    : 'translate-x-4 translate-y-4 rotate-2 z-0'
+                    : 'translate-x-2 translate-y-2 rotate-1 z-0'
                 }`}
                 style={{ 
                   transform: currentCardIndex === 2 
                     ? 'translateX(0) translateY(0) rotate(0deg)' 
-                    : `translateX(${4 + (3 - currentCardIndex) * 2}px) translateY(${4 + (3 - currentCardIndex) * 2}px) rotate(${2 + (3 - currentCardIndex) * 0.5}deg)`
+                    : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
                 <div className="bg-gradient-to-br from-green-50/90 to-emerald-50/90 dark:from-green-900/90 dark:to-emerald-900/90 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
@@ -305,12 +305,12 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-500 transform ${
                   currentCardIndex === 3 
                     ? 'translate-x-0 translate-y-0 rotate-0 z-10' 
-                    : 'translate-x-4 translate-y-4 rotate-2 z-0'
+                    : 'translate-x-2 translate-y-2 rotate-1 z-0'
                 }`}
                 style={{ 
                   transform: currentCardIndex === 3 
                     ? 'translateX(0) translateY(0) rotate(0deg)' 
-                    : `translateX(${4 + (3 - currentCardIndex) * 2}px) translateY(${4 + (3 - currentCardIndex) * 2}px) rotate(${2 + (3 - currentCardIndex) * 0.5}deg)`
+                    : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
                 <div className="bg-gradient-to-br from-purple-50/90 to-pink-50/90 dark:from-purple-900/90 dark:to-pink-900/90 backdrop-blur-sm border border-purple-200/50 dark:border-purple-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
@@ -331,12 +331,12 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-500 transform ${
                   currentCardIndex === 4 
                     ? 'translate-x-0 translate-y-0 rotate-0 z-10' 
-                    : 'translate-x-4 translate-y-4 rotate-2 z-0'
+                    : 'translate-x-2 translate-y-2 rotate-1 z-0'
                 }`}
                 style={{ 
                   transform: currentCardIndex === 4 
                     ? 'translateX(0) translateY(0) rotate(0deg)' 
-                    : `translateX(${4 + (4 - currentCardIndex) * 2}px) translateY(${4 + (4 - currentCardIndex) * 2}px) rotate(${2 + (4 - currentCardIndex) * 0.5}deg)`
+                    : `translateX(${2 + (4 - currentCardIndex) * 1.2}px) translateY(${2 + (4 - currentCardIndex) * 1.2}px) rotate(${1 + (4 - currentCardIndex) * 0.3}deg)`
                 }}
               >
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
@@ -384,15 +384,17 @@ export default function Home() {
             )}
           </div>
 
-          {/* Donate CTA */}
-          <div className="max-w-2xl mx-auto mt-6">
-            <a
-              href="/donate"
-              className="block w-full text-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-semibold text-base hover:shadow-xl transition-all duration-300"
-            >
-              Donate
-            </a>
-          </div>
+          {/* Donate CTA - Hide on last card */}
+          {currentCardIndex !== 4 && (
+            <div className="max-w-2xl mx-auto mt-6">
+              <a
+                href="/donate"
+                className="block w-full text-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-semibold text-base hover:shadow-xl transition-all duration-300"
+              >
+                Donate
+              </a>
+            </div>
+          )}
         </div>
     </div>
     </Layout>

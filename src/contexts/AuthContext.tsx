@@ -34,7 +34,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let previousAnonUid: string | null = null;
     const unsubscribe = onAuthStateChange(async (user) => {
+      // Remember previous anonymous UID for potential migration
+      if (user && user.isAnonymous) {
+        previousAnonUid = user.uid;
+      }
+
       setUser(user);
       if (user) {
         try {
@@ -70,9 +76,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleGoogleSignIn = async (): Promise<User> => {
+    // If there is an anonymous user signed in, capture their uid for migration
+    const currentAnonUid = auth.currentUser && auth.currentUser.isAnonymous ? auth.currentUser.uid : null;
+    console.log('[Auth] Google sign-in: currentAnonUid =', currentAnonUid);
     try {
       const result = await signInWithGoogle();
-      return result.user;
+      const newUser = result.user;
+
+      console.log('[Auth] Google sign-in: newUser.uid =', newUser.uid);
+
+      const { migrateAnonymousAccount, getUserProfile, createUserProfile } = await import('@/lib/firebase');
+
+      // If there was an anonymous user, migrate their data
+      if (currentAnonUid) {
+        try {
+          console.log('[Auth] Running migrateAnonymousAccount from', currentAnonUid, 'to', newUser.uid);
+          await migrateAnonymousAccount(currentAnonUid, newUser.uid);
+          const profile = await getUserProfile(newUser.uid);
+          setUserProfile(profile as UserProfile | null);
+          console.log('[Auth] Migration complete, profile:', profile);
+        } catch (mErr) {
+          console.warn('Migration failed:', mErr);
+        }
+      } else {
+        // No anonymous user, so check if profile exists, and create if not
+        let profile = await getUserProfile(newUser.uid);
+        if (!profile) {
+          // Use displayName or fallback to 'User', and generate a handle
+          const nickname = newUser.displayName || 'User';
+          const handle = (nickname.replace(/\s+/g, '').toLowerCase() || 'user') + Math.floor(Math.random() * 10000);
+          await createUserProfile(newUser.uid, nickname, handle);
+          profile = await getUserProfile(newUser.uid);
+        }
+        setUserProfile(profile as UserProfile | null);
+      }
+
+      // Attempt to register push token (if messaging configured)
+      try {
+        const { registerPushToken } = await import('@/lib/firebase');
+        await registerPushToken();
+      } catch (err) {
+        // ignore
+      }
+
+      return newUser;
     } catch (error) {
       console.error('Error signing in with Google:', error);
       throw error;
@@ -80,9 +127,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleEmailSignIn = async (email: string, password: string): Promise<User> => {
+    const currentAnonUid = auth.currentUser && auth.currentUser.isAnonymous ? auth.currentUser.uid : null;
     try {
       const result = await signInWithEmail(email, password);
-      return result.user;
+      const newUser = result.user;
+
+      if (currentAnonUid && newUser.uid !== currentAnonUid) {
+        try {
+          const { migrateAnonymousAccount, getUserProfile } = await import('@/lib/firebase');
+          await migrateAnonymousAccount(currentAnonUid, newUser.uid);
+          const profile = await getUserProfile(newUser.uid);
+          setUserProfile(profile as UserProfile | null);
+        } catch (mErr) {
+          console.warn('Migration failed:', mErr);
+        }
+      }
+
+      return newUser;
     } catch (error) {
       console.error('Error signing in with email:', error);
       throw error;
@@ -90,9 +151,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleCreateUserWithEmail = async (email: string, password: string): Promise<User> => {
+    const currentAnonUid = auth.currentUser && auth.currentUser.isAnonymous ? auth.currentUser.uid : null;
     try {
       const result = await createUserWithEmail(email, password);
-      return result.user;
+      const newUser = result.user;
+
+      if (currentAnonUid && newUser.uid !== currentAnonUid) {
+        try {
+          const { migrateAnonymousAccount, getUserProfile } = await import('@/lib/firebase');
+          await migrateAnonymousAccount(currentAnonUid, newUser.uid);
+          const profile = await getUserProfile(newUser.uid);
+          setUserProfile(profile as UserProfile | null);
+        } catch (mErr) {
+          console.warn('Migration failed:', mErr);
+        }
+      }
+
+      return newUser;
     } catch (error) {
       console.error('Error creating user with email:', error);
       throw error;

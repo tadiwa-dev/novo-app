@@ -6,9 +6,30 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Logo } from './Logo';
 
 const navItems = [
-  { name: 'Home', href: '/', icon: '🏠' },
-  { name: 'Urge Rescue', href: '/urge-rescue', icon: '🚨' },
-  { name: 'Donate', href: '/donate', icon: '💝' },
+  {
+    name: 'Home',
+    href: '/',
+    icon: (
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" />
+      </svg>
+    )
+  },
+  {
+    name: 'Urge Rescue',
+    href: '/urge-rescue',
+    // keep the panic emoji as requested
+    icon: '🚨'
+  },
+  {
+    name: 'Donate',
+    href: '/donate',
+    icon: (
+      <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    )
+  }
 ];
 
 interface NavbarProps {
@@ -67,7 +88,13 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
                 title="Logout"
               >
                 <span className="hidden sm:inline">Logout</span>
-                <span className="sm:hidden">🚪</span>
+                <span className="sm:hidden">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <path strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" d="M10 17l5-5-5-5" />
+                    <path strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" d="M15 12H3" />
+                  </svg>
+                </span>
               </button>
             </div>
           )}

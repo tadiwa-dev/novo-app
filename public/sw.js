@@ -4,7 +4,7 @@ const urlsToCache = [
   '/',
   '/onboarding',
   '/urge-rescue',
-  '/manifest.json',
+  '/site.webmanifest',
   '/favicon.ico',
   '/favicon-16x16.png',
   '/favicon-32x32.png',
@@ -51,3 +51,4 @@ self.addEventListener('activate', (event) => {
     })
   );
 });
+

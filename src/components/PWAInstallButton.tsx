@@ -20,7 +20,14 @@ export function PWAInstallButton() {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const evt = e as BeforeInstallPromptEvent;
+      // Save to component state and window for global access
+      setDeferredPrompt(evt);
+      try {
+        (window as any).__deferredPwaPrompt = evt;
+      } catch (err) {
+        // ignore
+      }
       setShowInstallButton(true);
     };
 
@@ -40,13 +47,14 @@ export function PWAInstallButton() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    const promptEvent = deferredPrompt || (window as any).__deferredPwaPrompt;
+    if (!promptEvent) return;
 
     // Show the install prompt
-    deferredPrompt.prompt();
+    await promptEvent.prompt();
 
     // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
+    const { outcome } = await promptEvent.userChoice;
 
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');

@@ -83,6 +83,11 @@ export const createUserWithEmail = async (email: string, password: string) => {
 export const createUserProfile = async (userId: string, nickname: string, handle: string) => {
   try {
     const userRef = doc(db, 'users', userId);
+    const existingSnap = await getDoc(userRef);
+    if (existingSnap.exists()) {
+      // Profile already exists, do not overwrite
+      return;
+    }
     const profileData = {
       nickname,
       handle,
@@ -92,7 +97,6 @@ export const createUserProfile = async (userId: string, nickname: string, handle
       badges: []
     };
     await setDoc(userRef, profileData);
-    
     // Also save to local storage as backup
     localStorage.setItem(`userProfile_${userId}`, JSON.stringify(profileData));
   } catch (error) {
@@ -189,4 +193,96 @@ export const incrementPrayerCount = async (prayerId: string) => {
   await updateDoc(prayerRef, {
     prayerCount: increment(1)
   });
+};
+
+// Migrate anonymous user data to a new authenticated user id
+export const migrateAnonymousAccount = async (fromUid: string, toUid: string) => {
+  try {
+    // Copy user profile if it exists
+    const fromRef = doc(db, 'users', fromUid);
+    const fromSnap = await getDoc(fromRef);
+    if (fromSnap.exists()) {
+      const profileData = fromSnap.data();
+      const toRef = doc(db, 'users', toUid);
+      await setDoc(toRef, {
+        ...profileData,
+        // keep createdAt from original user if present
+        createdAt: profileData.createdAt || new Date()
+      });
+      // Optionally delete anonymous profile
+      // await deleteDoc(fromRef);
+    }
+
+    // Move journal entries
+    const journalQuery = query(collection(db, 'journal'), orderBy('createdAt', 'desc'));
+    const journalSnapshot = await (await import('firebase/firestore')).getDocs(journalQuery);
+    const journalDocs = journalSnapshot.docs.filter(d => d.data().userId === fromUid);
+    for (const d of journalDocs) {
+      const data = d.data();
+      const newDocRef = collection(db, 'journal');
+      await addDoc(newDocRef, {
+        ...data,
+        userId: toUid
+      });
+      // Optionally delete old doc: await deleteDoc(d.ref);
+    }
+
+    // Move prayer requests
+    const prayerQuery = query(collection(db, 'prayers'), orderBy('createdAt', 'desc'));
+    const prayerSnapshot = await (await import('firebase/firestore')).getDocs(prayerQuery);
+    const prayerDocs = prayerSnapshot.docs.filter(d => d.data().userId === fromUid);
+    for (const d of prayerDocs) {
+      const data = d.data();
+      const newDocRef = collection(db, 'prayers');
+      await addDoc(newDocRef, {
+        ...data,
+        userId: toUid
+      });
+      // Optionally delete old doc: await deleteDoc(d.ref);
+    }
+
+    // Migrate localStorage backup if present
+    const localProfile = localStorage.getItem(`userProfile_${fromUid}`);
+    if (localProfile) {
+      localStorage.setItem(`userProfile_${toUid}`, localProfile);
+      localStorage.removeItem(`userProfile_${fromUid}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error migrating anonymous account:', error);
+    return false;
+  }
+};
+
+// Register FCM push token (no-op if messaging isn't configured)
+export const registerPushToken = async (): Promise<string | null> => {
+  try {
+    // Lazy import to avoid bundling messaging on server or when not installed
+    const { getMessaging, getToken, onMessage } = await import('firebase/messaging');
+    const messaging = getMessaging();
+    // In order to get a token, you need to pass the VAPID key (public key) or have configured it in Firebase
+    // We attempt to get a token; if it fails, return null
+    const vapidKey = process.env.NEXT_PUBLIC_FCM_VAPID_KEY as string | undefined;
+    const token = await getToken(messaging, { vapidKey });
+    if (token) {
+      console.log('FCM token registered:', token);
+      // Persist token to the current user doc if available
+      try {
+        const currentUser = (await import('firebase/auth')).getAuth().currentUser;
+        if (currentUser) {
+          const userRef = doc(db, 'users', currentUser.uid);
+          await setDoc(userRef, { fcmToken: token }, { merge: true });
+        }
+      } catch (err) {
+        console.warn('Failed to persist FCM token to user profile:', err);
+      }
+      return token;
+    }
+    return null;
+  } catch (error) {
+    // Messaging not set up or permission denied - silently ignore
+    console.warn('FCM messaging not available or failed to register token:', error);
+    return null;
+  }
 };

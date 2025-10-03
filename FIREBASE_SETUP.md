@@ -55,3 +55,4 @@ After adding the domain:
 1. Visit your Vercel app: https://novo-app-sflx.vercel.app
 2. Try Google Sign-in
 3. It should work without the unauthorized domain error
+
