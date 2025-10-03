@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({
   variable: "--font-inter",
