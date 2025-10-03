@@ -38,10 +38,7 @@ export default function Home() {
   if (!userProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg mx-auto mb-4 animate-pulse"></div>
-          <p className="text-gray-600">Loading your progress...</p>
-        </div>
+        <LoadingSpinner size="lg" text="Loading your progress..." />
       </div>
     );
   }

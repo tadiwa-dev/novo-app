@@ -68,6 +68,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (): Promise<User> => {
     try {
       const result = await signInAnonymous();
+      const { createUserProfile, getUserProfile } = await import('@/lib/firebase');
+      
+      // Generate a guest nickname and handle
+      const guestNumber = Math.floor(Math.random() * 10000);
+      const nickname = `Guest ${guestNumber}`;
+      const handle = `guest${guestNumber}`;
+      
+      // Create profile for anonymous user
+      await createUserProfile(result.user.uid, nickname, handle);
+      const profile = await getUserProfile(result.user.uid);
+      setUserProfile(profile as UserProfile | null);
+      
       return result.user;
     } catch (error) {
       console.error('Error signing in:', error);

@@ -18,15 +18,12 @@ export function LoadingSpinner({ size = 'md', text = 'Loading...' }: LoadingSpin
     <div className="flex flex-col items-center justify-center space-y-3">
       <div className={`${sizeClasses[size]} relative overflow-hidden rounded-lg`}>
         <Image
-          src="/logo.svg"
+          src="/logo.png"
           alt="Loading"
           width={size === 'sm' ? 24 : size === 'md' ? 32 : 48}
           height={size === 'sm' ? 24 : size === 'md' ? 32 : 48}
           className="w-full h-full object-contain"
-          onError={(e) => {
-            // Fallback to PNG if SVG fails
-            e.currentTarget.src = '/logo.png';
-          }}
+          priority
         />
         {/* Shine effect overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shine"></div>
