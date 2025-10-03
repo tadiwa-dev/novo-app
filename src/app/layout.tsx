@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
+import { PWAInstallButton } from "@/components/PWAInstallButton";
 import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
@@ -72,6 +73,7 @@ export default function RootLayout({
         <PWAProvider>
           <Providers>
             {children}
+            <PWAInstallButton />
           </Providers>
         </PWAProvider>
         <Analytics />

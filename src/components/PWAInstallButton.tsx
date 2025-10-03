@@ -19,8 +19,20 @@ export function PWAInstallButton() {
   const [showIOSGuide, setShowIOSGuide] = useState(false);
 
   useEffect(() => {
-    setIsIOS(isIOSSafari());
-    setShowInstallButton(true);
+    // Check if already installed
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+      || (window.navigator as any).standalone 
+      || document.referrer.includes('android-app://');
+    
+    if (isStandalone) {
+      setShowInstallButton(false);
+      return;
+    }
+
+    const isIosSafari = isIOSSafari();
+    setIsIOS(isIosSafari);
+    setShowInstallButton(isIosSafari); // Only show initially for iOS
+
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
