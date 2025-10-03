@@ -72,6 +72,7 @@ export default function DonatePage() {
           >
             {isLoading ? 'Redirecting…' : 'Donate with Pesepay'}
           </button>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center">* Ecocash also available</p>
         </form>
       </div>
     </Layout>
