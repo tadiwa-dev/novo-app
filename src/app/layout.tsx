@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,10 +71,10 @@ export default function RootLayout({
             </div>
         <PWAProvider>
           <Providers>
-            <Analytics />
             {children}
           </Providers>
         </PWAProvider>
+        <Analytics />
       </body>
     </html>
   );
