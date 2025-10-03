@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { isIOSSafari } from '@/lib/pwa';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -14,8 +15,12 @@ interface BeforeInstallPromptEvent extends Event {
 export function PWAInstallButton() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSGuide, setShowIOSGuide] = useState(false);
 
   useEffect(() => {
+    setIsIOS(isIOSSafari());
+    setShowInstallButton(true);
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
@@ -69,6 +74,51 @@ export function PWAInstallButton() {
 
   if (!showInstallButton) {
     return null;
+  }
+
+  if (isIOS) {
+    return (
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          onClick={() => setShowIOSGuide(!showIOSGuide)}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 sm:px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-1 sm:space-x-2"
+        >
+          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <span className="font-medium text-sm sm:text-base hidden sm:inline">Install on iOS</span>
+          <span className="font-medium text-sm sm:hidden">Install</span>
+        </button>
+        
+        {showIOSGuide && (
+          <div className="absolute bottom-14 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 w-72 animate-fade-in">
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Install on iOS</h3>
+            <ol className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li className="flex items-center space-x-2">
+                <span className="font-semibold">1.</span>
+                <span>Tap the Share button in Safari</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="font-semibold">2.</span>
+                <span>Scroll down and tap "Add to Home Screen"</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="font-semibold">3.</span>
+                <span>Tap "Add" to install</span>
+              </li>
+            </ol>
+            <button 
+              onClick={() => setShowIOSGuide(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (

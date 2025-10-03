@@ -1,3 +1,15 @@
+// Check if the current browser is iOS Safari
+export function isIOSSafari(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  const ua = window.navigator.userAgent;
+  const iOS = /iPad|iPhone|iPod/.test(ua);
+  const webkit = /WebKit/.test(ua);
+  const standalone = 'standalone' in window.navigator;
+  
+  return iOS && webkit && !standalone;
+}
+
 // PWA Service Worker Registration
 export function registerServiceWorker() {
   if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
