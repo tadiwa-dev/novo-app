@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Layout } from '@/components/Layout';
+// import { Layout } from '@/components/Layout';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { saveJournalEntry, updateUserProgress } from '@/lib/firebase';
 import journeyData from '@/data/journey.json';
@@ -57,12 +57,10 @@ export default function Home() {
 
   if (!day) {
   return (
-      <Layout>
-        <div className="max-w-2xl mx-auto p-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Day Not Found</h1>
-          <p className="text-gray-600">Something went wrong. Please try refreshing the page.</p>
-        </div>
-      </Layout>
+      <div className="max-w-2xl mx-auto p-6 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Day Not Found</h1>
+        <p className="text-gray-600">Something went wrong. Please try refreshing the page.</p>
+      </div>
     );
   }
 
@@ -75,57 +73,55 @@ export default function Home() {
     setIsSubmitting(true);
 
     try {
-      // Save journal entry
-      await saveJournalEntry(user.uid, currentDay, reflection.trim());
-      
-      // Update user progress
-      await updateUserProgress(user.uid, currentDay);
-      
-      setIsCompleted(true);
-    } catch (error) {
-      console.error('Error completing day:', error);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      <div className="max-w-2xl mx-auto p-4 sm:p-6">
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🎉</div>
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4">
+            Day {currentDay} Completed!
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+            Great job! You've taken another step forward in your journey.
+          </p>
+        </div>
 
-  const handleRedo = () => {
-    setIsCompleted(false);
-    setReflection('');
-  };
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/50 dark:to-blue-900/50 rounded-xl p-4 sm:p-6 border border-green-200 dark:border-green-700 mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What's Next?</h2>
+          <p className="text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
+            {currentDay < 14 
+              ? `Come back tomorrow to unlock Day {currentDay + 1} and continue your journey to freedom.`
+              : "Congratulations! You've completed this week. More content will be available soon."
+            }
+          </p>
+          <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
+            "The Lord will guide you always; he will satisfy your needs in a sun-scorched land and will strengthen your frame." - Isaiah 58:11
+          </p>
+        </div>
 
-  if (isCompleted) {
-    return (
-      <Layout>
-        <div className="max-w-2xl mx-auto p-4 sm:p-6">
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🎉</div>
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4">
-              Day {currentDay} Completed!
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-              Great job! You've taken another step forward in your journey.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/50 dark:to-blue-900/50 rounded-xl p-4 sm:p-6 border border-green-200 dark:border-green-700 mb-4 sm:mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What's Next?</h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
-              {currentDay < 14 
-                ? `Come back tomorrow to unlock Day ${currentDay + 1} and continue your journey to freedom.`
-                : "Congratulations! You've completed this week. More content will be available soon."
-              }
-            </p>
-            <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
-              "The Lord will guide you always; he will satisfy your needs in a sun-scorched land and will strengthen your frame." - Isaiah 58:11
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <button
+            onClick={handleRedo}
+            className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base"
+          >
+            Re-do This Day
+          </button>
+          {currentDay < 14 && (
             <button
-              onClick={handleRedo}
-              className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base"
+              onClick={() => {
+                // Close the completion dialog and refresh to show the next day
+                // The progress was already updated in handleComplete
+                setIsCompleted(false);
+                setCurrentCardIndex(0);
+                setReflection('');
+                // Force a page refresh to load the new day
+                window.location.reload();
+              }}
+              className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
+            >
+              See You Tomorrow
+            </button>
+          )}
+        </div>
+      </div>
             >
               Re-do This Day
             </button>
@@ -152,8 +148,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 relative z-10">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <div className="relative">
@@ -393,7 +388,6 @@ export default function Home() {
             </div>
           )}
         </div>
-    </div>
-    </Layout>
+  </div>
   );
 }

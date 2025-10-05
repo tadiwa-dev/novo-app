@@ -26,22 +26,18 @@ export function BurgerMenu() {
           </svg>
         )}
       </button>
-
-      {/* Menu Panel */}
-      <div>
-        {/* Backdrop */}
-        {isOpen && (
-          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}>
-            <div className="fixed inset-0 bg-black/40" />
-          </div>
-        )}
-        {/* Animated Menu Content */}
-        <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl p-4 space-y-6 z-50 transform transition-transform duration-300 ease-in-out ${
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-          style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
-        >
+      {/* Backdrop */}
+      {isOpen && (
+        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}>
+          <div className="fixed inset-0 bg-black/40" />
+        </div>
+      )}
+      {/* Animated Menu Content */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl p-4 space-y-6 z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none'
+        }`}
+      >
           {/* User Profile Section */}
           <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Profile</h2>
@@ -125,7 +121,6 @@ export function BurgerMenu() {
               Contact Us
             </a>
           </nav>
-        </div>
       </div>
     </div>
   );
