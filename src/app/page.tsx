@@ -73,6 +73,28 @@ export default function Home() {
     setIsSubmitting(true);
 
     try {
+      // Save journal entry
+      await saveJournalEntry(user.uid, currentDay, reflection.trim());
+      
+      // Update user progress
+      await updateUserProgress(user.uid, currentDay);
+      
+      setIsCompleted(true);
+    } catch (error) {
+      console.error('Error completing day:', error);
+      alert('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRedo = () => {
+    setIsCompleted(false);
+    setReflection('');
+  };
+
+  if (isCompleted) {
+    return (
       <div className="max-w-2xl mx-auto p-4 sm:p-6">
         <div className="text-center mb-6 sm:mb-8">
           <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🎉</div>
@@ -88,7 +110,7 @@ export default function Home() {
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What's Next?</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
             {currentDay < 14 
-              ? `Come back tomorrow to unlock Day {currentDay + 1} and continue your journey to freedom.`
+              ? `Come back tomorrow to unlock Day ${currentDay + 1} and continue your journey to freedom.`
               : "Congratulations! You've completed this week. More content will be available soon."
             }
           </p>
@@ -122,28 +144,6 @@ export default function Home() {
           )}
         </div>
       </div>
-            >
-              Re-do This Day
-            </button>
-            {currentDay < 14 && (
-              <button
-                onClick={() => {
-                  // Close the completion dialog and refresh to show the next day
-                  // The progress was already updated in handleComplete
-                  setIsCompleted(false);
-                  setCurrentCardIndex(0);
-                  setReflection('');
-                  // Force a page refresh to load the new day
-                  window.location.reload();
-                }}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
-              >
-                See You Tomorrow
-              </button>
-            )}
-          </div>
-        </div>
-      </Layout>
     );
   }
 
