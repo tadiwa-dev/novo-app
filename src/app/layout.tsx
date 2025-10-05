@@ -4,8 +4,9 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
 import { PWAInstallButton } from "@/components/PWAInstallButton";
-import { Navbar } from '@/components/Navbar';
+import { GlobalNavbar } from '@/components/GlobalNavbar';
 import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { UrgeRescue } from "@/components/UrgeRescue";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -75,9 +76,10 @@ export default function RootLayout({
             </div>
         <PWAProvider>
           <Providers>
-            <Navbar />
+            <GlobalNavbar />
             <WelcomeScreen />
             {children}
+            <UrgeRescue />
             <PWAInstallButton />
           </Providers>
         </PWAProvider>
