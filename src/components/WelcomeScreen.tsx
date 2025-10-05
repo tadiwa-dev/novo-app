@@ -35,7 +35,7 @@ export function WelcomeScreen() {
     {
       title: "Urge Rescue",
       content: "When temptation strikes, our Urge Rescue feature provides immediate support with prayer, scripture, and practical steps.",
-      icon: "�"
+      icon: "🚨"
     },
     {
       title: "Community Support",

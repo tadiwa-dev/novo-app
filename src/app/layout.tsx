@@ -5,7 +5,7 @@ import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
 import { PWAInstallButton } from "@/components/PWAInstallButton";
 import { GlobalNavbar } from '@/components/GlobalNavbar';
-import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UrgeRescue } from "@/components/UrgeRescue";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
