@@ -9,7 +9,9 @@ export function WelcomeScreen() {
   useEffect(() => {
     // Check if this is the first visit
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
-    if (!hasSeenWelcome) {
+    const isHomePage = window.location.pathname === '/';
+    
+    if (!hasSeenWelcome && isHomePage) {
       setShow(true);
     }
   }, []);
@@ -22,8 +24,8 @@ export function WelcomeScreen() {
   const welcomeSteps = [
     {
       title: "Welcome to Novo",
-      content: "Your journey to freedom starts here. We're here to support you every step of the way with a Christ-centered approach to overcoming addiction.",
-      icon: "🙏"
+      content: "Your journey to freedom from porn starts here. Novo means to make new in Latin, and that's exactly what this journey is about - your transformation to a new life of freedom through Christ.",
+      icon: "✨"
     },
     {
       title: "Daily Journey",
