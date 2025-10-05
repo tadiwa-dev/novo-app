@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PWAProvider } from "@/components/PWAProvider";
 import { PWAInstallButton } from "@/components/PWAInstallButton";
+import { BurgerMenu } from "@/components/BurgerMenu";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -73,6 +74,7 @@ export default function RootLayout({
             </div>
         <PWAProvider>
           <Providers>
+            <BurgerMenu />
             {children}
             <PWAInstallButton />
           </Providers>
