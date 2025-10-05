@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Logo } from './Logo';
 import { BurgerMenu } from './BurgerMenu';
 
 const navItems = [
@@ -71,12 +70,9 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
 		<nav className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-blue-200 dark:border-gray-700 sticky top-0 z-50">
 			<div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
 				<div className="flex justify-between items-center h-14 sm:h-16">
-					{/* BurgerMenu on the left */}
-					<div className="flex items-center space-x-2">
+					{/* BurgerMenu on the left, logo removed */}
+					<div className="flex items-center">
 						<BurgerMenu />
-						<Link href="/">
-							<Logo size="sm" showText={false} />
-						</Link>
 					</div>
 
 					{/* Navigation Items */}
