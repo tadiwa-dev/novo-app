@@ -258,13 +258,33 @@ export const migrateAnonymousAccount = async (fromUid: string, toUid: string) =>
 // Register FCM push token (no-op if messaging isn't configured)
 export const registerPushToken = async (): Promise<string | null> => {
   try {
+    // Check if service worker is registered
+    if (!('serviceWorker' in navigator)) {
+      console.warn('Service Worker not supported');
+      return null;
+    }
+
+    // Request notification permission first
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      console.warn('Notification permission not granted');
+      return null;
+    }
+
     // Lazy import to avoid bundling messaging on server or when not installed
     const { getMessaging, getToken, onMessage } = await import('firebase/messaging');
     const messaging = getMessaging();
-    // In order to get a token, you need to pass the VAPID key (public key) or have configured it in Firebase
-    // We attempt to get a token; if it fails, return null
+
+    // Ensure service worker is registered
+    await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+
+    // Get token with VAPID key
     const vapidKey = process.env.NEXT_PUBLIC_FCM_VAPID_KEY as string | undefined;
-    const token = await getToken(messaging, { vapidKey });
+    const token = await getToken(messaging, { 
+      vapidKey,
+      serviceWorkerRegistration: await navigator.serviceWorker.ready
+    });
+    
     if (token) {
       console.log('FCM token registered:', token);
       // Persist token to the current user doc if available
