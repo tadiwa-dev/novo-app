@@ -9,7 +9,7 @@ export function BurgerMenu() {
   const { user, userProfile } = useAuth();
 
   return (
-    <div className="relative z-50">
+    <div className="relative z-[60]">
       {/* Burger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -28,13 +28,14 @@ export function BurgerMenu() {
       </button>
       {/* Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}>
-          <div className="fixed inset-0 bg-black/40" />
-        </div>
+        <div 
+          className="fixed inset-0 z-[60] bg-black/40" 
+          onClick={() => setIsOpen(false)}
+        />
       )}
       {/* Animated Menu Content */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl p-4 space-y-6 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl p-4 space-y-6 z-[70] transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none'
         }`}
       >
