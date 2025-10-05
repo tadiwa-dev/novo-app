@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Navbar } from './Navbar';
 import { UrgeRescue } from './UrgeRescue';
 import { LogoutDialog } from './LogoutDialog';
 import { SignInPopup } from './SignInPopup';
@@ -58,7 +57,6 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar onLogoutClick={() => setShowLogoutDialog(true)} />
       <main className="flex-1">
         {children}
       </main>

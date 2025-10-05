@@ -34,7 +34,7 @@ export function BurgerMenu() {
       )}
       {/* Animated Menu Content */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl p-4 space-y-6 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl p-4 space-y-6 z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none'
         }`}
       >
