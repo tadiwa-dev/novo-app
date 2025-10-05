@@ -168,6 +168,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await createUserWithEmail(email, password);
       const newUser = result.user;
 
+      // Clear welcome screen flag for new user
+      localStorage.removeItem('hasSeenWelcome');
+
       if (currentAnonUid && newUser.uid !== currentAnonUid) {
         try {
           const { migrateAnonymousAccount, getUserProfile } = await import('@/lib/firebase');
@@ -189,6 +192,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async (): Promise<void> => {
     try {
       await signOut(auth);
+      // Clear welcome screen flag on logout
+      localStorage.removeItem('hasSeenWelcome');
       // Don't manually set user and userProfile to null here
       // Let the auth state change listener handle it
     } catch (error) {

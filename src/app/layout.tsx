@@ -75,7 +75,7 @@ export default function RootLayout({
             </div>
         <PWAProvider>
           <Providers>
-            <BurgerMenu />
+            {/* BurgerMenu is now in Navbar */}
             <WelcomeScreen />
             {children}
             <PWAInstallButton />
