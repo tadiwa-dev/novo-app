@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Layout } from '@/components/Layout';
 import urgeRescueData from '@/data/urge-rescue.json';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function UrgeRescuePage() {
   const { user, loading } = useAuth();
@@ -18,14 +20,42 @@ export default function UrgeRescuePage() {
     }
   }, [user, loading, router]);
 
-  const getRandomScripture = () => {
-    const randomIndex = Math.floor(Math.random() * urgeRescueData.scriptures.length);
-    setCurrentScripture(randomIndex);
+  useEffect(() => {
+    // Get initial random content on load
+    getRandomContent();
+  }, []);
+
+  const getRandomContent = async () => {
+    // Get new random indices, ensuring they're different from current ones
+    const newScriptureIndex = getNewRandomIndex(urgeRescueData.scriptures.length, currentScripture);
+    const newPrayerIndex = getNewRandomIndex(urgeRescueData.prayers.length, currentPrayer);
+    
+    setCurrentScripture(newScriptureIndex);
+    setCurrentPrayer(newPrayerIndex);
+
+    // Record usage if user is logged in
+    if (user) {
+      try {
+        const urgeRescueRef = collection(db, 'urge_rescue_uses');
+        await addDoc(urgeRescueRef, {
+          userId: user.uid,
+          scriptureIndex: newScriptureIndex,
+          prayerIndex: newPrayerIndex,
+          createdAt: new Date()
+        });
+      } catch (error) {
+        console.error('Error recording urge rescue usage:', error);
+      }
+    }
   };
 
-  const getRandomPrayer = () => {
-    const randomIndex = Math.floor(Math.random() * urgeRescueData.prayers.length);
-    setCurrentPrayer(randomIndex);
+  // Helper to get a new random index different from the current one
+  const getNewRandomIndex = (max: number, current: number): number => {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * max);
+    } while (newIndex === current && max > 1);
+    return newIndex;
   };
 
   if (loading) {
@@ -65,7 +95,7 @@ export default function UrgeRescuePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-blue-800">📖 Scripture for Strength</h2>
             <button
-              onClick={getRandomScripture}
+              onClick={getRandomContent}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
             >
               New Verse
@@ -82,7 +112,7 @@ export default function UrgeRescuePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-purple-800">🙏 Prayer for This Moment</h2>
             <button
-              onClick={getRandomPrayer}
+              onClick={getRandomContent}
               className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
             >
               New Prayer
