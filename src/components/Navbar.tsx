@@ -54,12 +54,13 @@ const navItems = [
 ];
 
 interface NavbarProps {
-	onLogoutClick: () => void;
+	onLogoutClick?: () => void;
 }
 
 export function Navbar({ onLogoutClick }: NavbarProps) {
 	const pathname = usePathname();
 	const { userProfile } = useAuth();
+	const handleLogout = onLogoutClick || (() => {});
 
 	// Don't show navbar on onboarding page
 	if (pathname === '/onboarding') {
@@ -109,7 +110,7 @@ export function Navbar({ onLogoutClick }: NavbarProps) {
 								</span>
 							</div>
 							<button
-								onClick={onLogoutClick}
+								onClick={handleLogout}
 								className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs sm:text-sm font-medium transition-colors"
 								title="Logout"
 							>

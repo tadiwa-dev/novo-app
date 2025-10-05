@@ -75,7 +75,7 @@ export default function RootLayout({
             </div>
         <PWAProvider>
           <Providers>
-            <Navbar onLogoutClick={() => {}} />
+            <Navbar />
             <WelcomeScreen />
             {children}
             <PWAInstallButton />
