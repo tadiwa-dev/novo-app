@@ -1,11 +1,11 @@
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyAb1k_HPBmNSkscXiAjxk5Uw_Oi6ZwlcLQ',
-  projectId: 'novo-freedom',
-  messagingSenderId: '323037324621',
-  appId: '1:323037324621:web:c16d8b7c453112c8d182fa'
+// Firebase config will be injected by the main app
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'FIREBASE_CONFIG') {
+    firebase.initializeApp(event.data.config);
+  }
 });
 
 const messaging = firebase.messaging();

@@ -275,14 +275,28 @@ export const registerPushToken = async (): Promise<string | null> => {
     const { getMessaging, getToken, onMessage } = await import('firebase/messaging');
     const messaging = getMessaging();
 
-    // Ensure service worker is registered
-    await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    // Register service worker and send Firebase config
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    const serviceWorker = registration.active || registration.waiting || registration.installing;
+    
+    // Send Firebase config to service worker
+    if (serviceWorker) {
+      serviceWorker.postMessage({
+        type: 'FIREBASE_CONFIG',
+        config: {
+          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+          messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+          appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+        }
+      });
+    }
 
     // Get token with VAPID key
     const vapidKey = process.env.NEXT_PUBLIC_FCM_VAPID_KEY as string | undefined;
     const token = await getToken(messaging, { 
       vapidKey,
-      serviceWorkerRegistration: await navigator.serviceWorker.ready
+      serviceWorkerRegistration: registration
     });
     
     if (token) {
