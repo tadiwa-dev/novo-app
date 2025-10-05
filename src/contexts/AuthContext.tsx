@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import { onAuthStateChange, signInAnonymous, signInWithGoogle, signInWithEmail, createUserWithEmail } from '@/lib/firebase';
+import { onAuthStateChange, signInAnonymous, signInWithGoogle, handleRedirectResult, signInWithEmail, createUserWithEmail } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
@@ -35,6 +35,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let previousAnonUid: string | null = null;
+    
+    // Check for redirect result on load
+    const checkRedirectResult = async () => {
+      try {
+        const result = await handleRedirectResult();
+        if (result) {
+          console.log('Google sign-in redirect result:', result.user);
+          // The auth state change will handle the rest
+        }
+      } catch (error) {
+        console.error('Error handling redirect result:', error);
+      }
+    };
+    
+    checkRedirectResult();
+
     const unsubscribe = onAuthStateChange(async (user) => {
       // Remember previous anonymous UID for potential migration
       if (user && user.isAnonymous) {
@@ -93,6 +109,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('[Auth] Google sign-in: currentAnonUid =', currentAnonUid);
     try {
       const result = await signInWithGoogle();
+      
+      // If result is null, it means redirect was used - wait for auth state change
+      if (!result) {
+        throw new Error('Sign-in redirected - please wait for completion');
+      }
+      
       const newUser = result.user;
 
       console.log('[Auth] Google sign-in: newUser.uid =', newUser.uid);

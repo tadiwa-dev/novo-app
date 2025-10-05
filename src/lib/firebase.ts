@@ -5,6 +5,8 @@ import {
   onAuthStateChanged, 
   User, 
   signInWithPopup, 
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider, 
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
@@ -46,13 +48,35 @@ export const db = getFirestore(app);
 
 // Initialize Google Auth Provider
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 // Auth functions
 export const signInAnonymous = () => signInAnonymously(auth);
 export const onAuthStateChange = (callback: (user: User | null) => void) => onAuthStateChanged(auth, callback);
 
 export const signInWithGoogle = async () => {
-  return await signInWithPopup(auth, googleProvider);
+  try {
+    // Try popup first, fallback to redirect if blocked
+    return await signInWithPopup(auth, googleProvider);
+  } catch (error: any) {
+    if (error.code === 'auth/popup-blocked' || error.message?.includes('Cross-Origin-Opener-Policy')) {
+      // Fallback to redirect
+      await signInWithRedirect(auth, googleProvider);
+      return null; // The result will be handled by getRedirectResult
+    }
+    throw error;
+  }
+};
+
+export const handleRedirectResult = async () => {
+  try {
+    return await getRedirectResult(auth);
+  } catch (error) {
+    console.error('Error handling redirect result:', error);
+    throw error;
+  }
 };
 
 export const signInWithEmail = async (email: string, password: string) => {
