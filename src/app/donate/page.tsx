@@ -33,7 +33,22 @@ export default function DonatePage() {
     <Layout>
       <div className="max-w-md mx-auto p-4 sm:p-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Support The Journey</h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm sm:text-base">Your donation helps keep this ministry free and accessible.</p>
+        
+        <div className="space-y-4 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+            Your donation, no matter how small, makes a significant impact in keeping this ministry accessible to everyone seeking freedom from addiction.
+          </p>
+          
+          <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+            <h2 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">Your Support Helps Us:</h2>
+            <ul className="list-disc list-inside space-y-2 text-sm text-blue-800 dark:text-blue-200">
+              <li>Keep the app completely free for everyone</li>
+              <li>Cover server and maintenance costs</li>
+              <li>Develop new features and improvements</li>
+              <li>Reach more people struggling with addiction</li>
+            </ul>
+          </div>
+        </div>
 
         {error && (
           <div className="mb-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 text-red-700 dark:text-red-300 text-sm">
