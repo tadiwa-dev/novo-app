@@ -50,6 +50,11 @@ export default function OnboardingPage() {
       const handle = generateHandle();
       await createUserProfile(currentUser.uid, nickname.trim(), handle);
 
+      // Clear welcome screen flag for new anonymous users so they see the welcome screen
+      if (currentUser.isAnonymous) {
+        localStorage.removeItem('hasSeenWelcome');
+      }
+
       // Redirect to home page
       router.push('/');
     } catch (error) {

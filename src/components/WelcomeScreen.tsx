@@ -1,20 +1,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function WelcomeScreen() {
   const [show, setShow] = useState(false);
   const [step, setStep] = useState(1);
+  const { user, userProfile } = useAuth();
   
   useEffect(() => {
-    // Check if this is the first visit
+    // Check if this is the first visit or a new anonymous user
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     const isHomePage = window.location.pathname === '/';
     
-    if (!hasSeenWelcome && isHomePage) {
+    // Show welcome screen if:
+    // 1. Haven't seen welcome AND on home page, OR
+    // 2. Is a new anonymous user (currentDay = 1 and no completed days)
+    const isNewAnonymousUser = user && user.isAnonymous && userProfile && 
+      userProfile.currentDay === 1 && 
+      (!userProfile.completedDays || userProfile.completedDays.length === 0);
+    
+    if ((!hasSeenWelcome && isHomePage) || isNewAnonymousUser) {
       setShow(true);
     }
-  }, []);
+  }, [user, userProfile]);
 
   const handleClose = () => {
     localStorage.setItem('hasSeenWelcome', 'true');
