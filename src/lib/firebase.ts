@@ -323,6 +323,26 @@ export const registerPushToken = async (): Promise<string | null> => {
       serviceWorkerRegistration: registration
     });
     
+    // Set up foreground message handler for when app is active
+    onMessage(messaging, (payload) => {
+      console.log('Foreground notification received:', payload);
+      
+      // Show notification when app is active (mobile browsers need this)
+      if ('serviceWorker' in navigator && registration) {
+        const title = payload.notification?.title || 'Novo Reminder';
+        const options = {
+          body: payload.notification?.body || "Don't forget to complete today's reflection.",
+          icon: '/icon-192x192.png',
+          badge: '/favicon-32x32.png',
+          requireInteraction: true, // Keep notification visible until user interacts
+          vibrate: [200, 100, 200], // Vibration pattern for mobile
+          data: payload.data
+        };
+        
+        registration.showNotification(title, options);
+      }
+    });
+    
     if (token) {
       console.log('FCM token registered:', token);
       // Persist token to the current user doc if available
