@@ -216,8 +216,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async (): Promise<void> => {
     try {
       await signOut(auth);
-      // Clear welcome screen flag on logout
-      localStorage.removeItem('hasSeenWelcome');
+      // Don't clear welcome screen flag on logout - existing users shouldn't see it again
       // Don't manually set user and userProfile to null here
       // Let the auth state change listener handle it
     } catch (error) {
