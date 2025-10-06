@@ -190,8 +190,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await createUserWithEmail(email, password);
       const newUser = result.user;
 
-      // Clear welcome screen flag for new user
-      localStorage.removeItem('hasSeenWelcome');
+      // Only clear welcome screen flag for truly new users (not migrating from anonymous)
+      if (!currentAnonUid) {
+        localStorage.removeItem('hasSeenWelcome');
+      }
 
       if (currentAnonUid && newUser.uid !== currentAnonUid) {
         try {

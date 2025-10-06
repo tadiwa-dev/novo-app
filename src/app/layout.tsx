@@ -7,6 +7,7 @@ import { PWAInstallButton } from "@/components/PWAInstallButton";
 import { GlobalNavbar } from '@/components/GlobalNavbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UrgeRescue } from "@/components/UrgeRescue";
+import { SignInPrompt } from '@/components/SignInPrompt';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -162,6 +163,7 @@ export default function RootLayout({
           <Providers>
             <GlobalNavbar />
             <WelcomeScreen />
+            <SignInPrompt />
             {children}
             <UrgeRescue />
             <PWAInstallButton />
