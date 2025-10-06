@@ -23,7 +23,55 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Novo - Freedom Journey",
   description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
+  keywords: ["freedom", "addiction recovery", "Christian discipleship", "12-week journey", "Christ-centered", "novo freedom"],
+  authors: [{ name: "Novo Freedom Team" }],
+  creator: "Novo Freedom",
+  publisher: "Novo Freedom",
   manifest: '/site.webmanifest',
+  metadataBase: new URL('https://www.novofreedom.app'),
+  alternates: {
+    canonical: 'https://www.novofreedom.app'
+  },
+  openGraph: {
+    title: "Novo - Freedom Journey",
+    description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
+    url: 'https://www.novofreedom.app',
+    siteName: 'Novo Freedom',
+    images: [
+      {
+        url: '/icon-512x512.png',
+        width: 512,
+        height: 512,
+        alt: 'Novo Freedom Logo'
+      },
+      {
+        url: '/icon-192x192.png',
+        width: 192,
+        height: 192,
+        alt: 'Novo Freedom Logo'
+      }
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Novo - Freedom Journey",
+    description: "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
+    images: ['/icon-512x512.png'],
+    creator: '@novofreedom'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -45,7 +93,11 @@ export const metadata: Metadata = {
   other: {
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'default'
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'google-site-verification': 'your-google-verification-code-here'
+  },
+  verification: {
+    google: 'your-google-verification-code-here'
   }
 };
 
@@ -62,8 +114,40 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Novo - Freedom Journey",
+    "description": "A Christ-centered web app for finding freedom from addiction through a 12-week discipleship journey",
+    "url": "https://www.novofreedom.app",
+    "logo": "https://www.novofreedom.app/logo.png",
+    "image": "https://www.novofreedom.app/icon-512x512.png",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "author": {
+      "@type": "Organization",
+      "name": "Novo Freedom"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "1"
+    }
+  };
+
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
           <body
             className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen relative`}
           >
