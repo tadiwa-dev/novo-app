@@ -8,8 +8,7 @@ import { GlobalNavbar } from '@/components/GlobalNavbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UrgeRescue } from "@/components/UrgeRescue";
 import { SignInPrompt } from '@/components/SignInPrompt';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { VercelAnalytics } from '@/components/VercelAnalytics';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -169,8 +168,7 @@ export default function RootLayout({
             <PWAInstallButton />
           </Providers>
         </PWAProvider>
-        <Analytics />
-        <SpeedInsights />
+        <VercelAnalytics />
       </body>
     </html>
   );

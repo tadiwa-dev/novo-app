@@ -5,40 +5,30 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compa
 let firebaseApp = null;
 let messaging = null;
 
-// Listen for Firebase config from main thread
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'FIREBASE_CONFIG') {
-    try {
-      // Initialize Firebase with the config from main thread
-      if (!firebaseApp) {
-        firebaseApp = firebase.initializeApp(event.data.config);
-        messaging = firebase.messaging();
-        
-        // Set up background message handler after initialization
-        messaging.onBackgroundMessage(function(payload) {
-          const notificationTitle = payload.notification.title || 'Novo Reminder';
-          const notificationOptions = {
-            body: payload.notification.body || "Don't forget to complete today's reflection.",
-            icon: '/icon-192x192.png',
-            badge: '/favicon-32x32.png',
-            requireInteraction: true, // Keep notification visible until user interacts
-            vibrate: [200, 100, 200], // Vibration pattern for mobile
-            data: payload.data || {}
-          };
+// Register event handlers immediately at initial evaluation
+self.addEventListener('push', handlePushEvent);
+self.addEventListener('notificationclick', handleNotificationClick);
+self.addEventListener('message', handleMessage);
 
-          return self.registration.showNotification(notificationTitle, notificationOptions);
-        });
-        
-        console.log('Firebase initialized in service worker');
-      }
-    } catch (error) {
-      console.error('Failed to initialize Firebase in service worker:', error);
-    }
-  }
-});
+// Handle push events (fallback)
+function handlePushEvent(event) {
+  console.log('Push event received:', event);
+  const data = event.data?.json?.() || {};
+  const title = data.notification?.title || 'Novo Reminder';
+  const options = {
+    body: data.notification?.body || "Don't forget to complete today's reflection.",
+    icon: '/icon-192x192.png',
+    badge: '/favicon-32x32.png',
+    requireInteraction: true,
+    vibrate: [200, 100, 200],
+    data: data.data || {}
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+}
 
 // Handle notification click events
-self.addEventListener('notificationclick', function(event) {
+function handleNotificationClick(event) {
+  console.log('Notification clicked:', event);
   event.notification.close();
   
   // Focus or open the app window
@@ -58,19 +48,37 @@ self.addEventListener('notificationclick', function(event) {
       }
     })
   );
-});
+}
 
-// Fallback push event handler
-self.addEventListener('push', function(event) {
-  const data = event.data?.json?.() || {};
-  const title = data.notification?.title || 'Novo Reminder';
-  const options = {
-    body: data.notification?.body || "Don't forget to complete today's reflection.",
-    icon: '/icon-192x192.png',
-    badge: '/favicon-32x32.png',
-    requireInteraction: true,
-    vibrate: [200, 100, 200],
-    data: data.data || {}
-  };
-  event.waitUntil(self.registration.showNotification(title, options));
-});
+// Handle messages from main thread
+function handleMessage(event) {
+  if (event.data && event.data.type === 'FIREBASE_CONFIG') {
+    try {
+      // Initialize Firebase with the config from main thread
+      if (!firebaseApp) {
+        firebaseApp = firebase.initializeApp(event.data.config);
+        messaging = firebase.messaging();
+        
+        // Set up background message handler after initialization
+        messaging.onBackgroundMessage(function(payload) {
+          console.log('Background message received:', payload);
+          const notificationTitle = payload.notification?.title || 'Novo Reminder';
+          const notificationOptions = {
+            body: payload.notification?.body || "Don't forget to complete today's reflection.",
+            icon: '/icon-192x192.png',
+            badge: '/favicon-32x32.png',
+            requireInteraction: true, // Keep notification visible until user interacts
+            vibrate: [200, 100, 200], // Vibration pattern for mobile
+            data: payload.data || {}
+          };
+
+          return self.registration.showNotification(notificationTitle, notificationOptions);
+        });
+        
+        console.log('Firebase initialized in service worker');
+      }
+    } catch (error) {
+      console.error('Failed to initialize Firebase in service worker:', error);
+    }
+  }
+}
