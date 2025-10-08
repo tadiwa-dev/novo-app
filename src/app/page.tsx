@@ -50,10 +50,19 @@ export default function Home() {
   const weekNumber = Math.ceil(currentDay / 7);
   const weekKey = `week${weekNumber}`;
   const week = journeyData[weekKey as keyof typeof journeyData];
+  // Compute total available days across all weeks dynamically (supports partial additions)
+  const totalDays = Object.values(journeyData as Record<string, any>).reduce(
+    (sum, w: any) => sum + ((w && Array.isArray(w.days)) ? w.days.length : 0),
+    0
+  );
   
   // Get the day within the week (1-7)
   const dayInWeek = ((currentDay - 1) % 7) + 1;
-  const day = week?.days.find(d => d.day === dayInWeek);
+  // Find the day entry: prefer within-week numbering (1-7), fallback to absolute numbering (e.g., 15, 22, 29)
+  let day = week?.days.find((d: any) => d.day === dayInWeek);
+  if (!day) {
+    day = week?.days.find((d: any) => d.day === currentDay);
+  }
 
   if (!day) {
   return (
@@ -109,10 +118,9 @@ export default function Home() {
         <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/50 dark:to-blue-900/50 rounded-xl p-4 sm:p-6 border border-green-200 dark:border-green-700 mb-4 sm:mb-6">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What's Next?</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
-            {currentDay < 14 
+            {currentDay < totalDays
               ? `Come back tomorrow to unlock Day ${currentDay + 1} and continue your journey to freedom.`
-              : "Congratulations! You've completed this week. More content will be available soon."
-            }
+              : "Congratulations! You've completed the current available content. Stay tuned for more!"}
           </p>
           <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
             "The Lord will guide you always; he will satisfy your needs in a sun-scorched land and will strengthen your frame." - Isaiah 58:11
@@ -126,7 +134,7 @@ export default function Home() {
           >
             Re-do This Day
           </button>
-          {currentDay < 14 && (
+          {currentDay < totalDays && (
             <button
               onClick={() => {
                 // Close the completion dialog and refresh to show the next day
