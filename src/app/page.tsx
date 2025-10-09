@@ -16,6 +16,44 @@ export default function Home() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
+  // Share functionality
+  const shareContent = async (title: string, content: string) => {
+    const shareText = `${title}\n\n${content}\n\nhttps://www.novofreedom.app`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Novo - ${title}`,
+          text: shareText,
+        });
+      } catch (error) {
+        // If share was cancelled, fall back to clipboard
+        if (error instanceof Error && error.name !== 'AbortError') {
+          copyToClipboard(shareText);
+        }
+      }
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      // You could add a toast notification here
+      alert('Content copied to clipboard!');
+    } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Content copied to clipboard!');
+    }
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       router.push('/onboarding');
@@ -236,7 +274,7 @@ export default function Home() {
                     : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
-                <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 dark:from-blue-900/90 dark:to-indigo-900/90 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
+                <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 dark:from-blue-900/90 dark:to-indigo-900/90 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full relative">
                   <div className="flex items-center mb-3 sm:mb-4">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                       <span className="text-white text-sm sm:text-base">📖</span>
@@ -245,6 +283,17 @@ export default function Home() {
                   </div>
                   <p className="text-blue-700 dark:text-blue-300 italic text-sm sm:text-base leading-relaxed mb-2">"{day.verse}"</p>
                   <p className="text-blue-600 dark:text-blue-400 font-semibold text-sm sm:text-base">— {day.verseReference}</p>
+                  
+                  {/* Share Button */}
+                  <button
+                    onClick={() => shareContent('Scripture', `"${day.verse}"\n\n— ${day.verseReference}`)}
+                    className="absolute bottom-4 left-4 flex items-center justify-center w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-md hover:shadow-lg"
+                    title="Share this scripture"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -261,7 +310,7 @@ export default function Home() {
                     : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full relative">
                   <div className="flex items-center mb-3 sm:mb-4">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                       <span className="text-white text-sm sm:text-base">💭</span>
@@ -271,6 +320,17 @@ export default function Home() {
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
                     {day.devotional}
                   </p>
+                  
+                  {/* Share Button */}
+                  <button
+                    onClick={() => shareContent('Devotional', day.devotional)}
+                    className="absolute bottom-4 left-4 flex items-center justify-center w-8 h-8 bg-purple-500 hover:bg-purple-600 text-white rounded-full transition-colors duration-200 shadow-md hover:shadow-lg"
+                    title="Share this devotional"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -287,7 +347,7 @@ export default function Home() {
                     : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
-                <div className="bg-gradient-to-br from-green-50/90 to-emerald-50/90 dark:from-green-900/90 dark:to-emerald-900/90 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
+                <div className="bg-gradient-to-br from-green-50/90 to-emerald-50/90 dark:from-green-900/90 dark:to-emerald-900/90 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full relative">
                   <div className="flex items-center mb-3 sm:mb-4">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                       <span className="text-white text-sm sm:text-base">✍️</span>
@@ -297,6 +357,17 @@ export default function Home() {
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
                     {day.activity}
                   </p>
+                  
+                  {/* Share Button */}
+                  <button
+                    onClick={() => shareContent('Activity', day.activity)}
+                    className="absolute bottom-4 left-4 flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors duration-200 shadow-md hover:shadow-lg"
+                    title="Share this activity"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -313,7 +384,7 @@ export default function Home() {
                     : `translateX(${2 + (3 - currentCardIndex) * 1.2}px) translateY(${2 + (3 - currentCardIndex) * 1.2}px) rotate(${1 + (3 - currentCardIndex) * 0.3}deg)`
                 }}
               >
-                <div className="bg-gradient-to-br from-purple-50/90 to-pink-50/90 dark:from-purple-900/90 dark:to-pink-900/90 backdrop-blur-sm border border-purple-200/50 dark:border-purple-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
+                <div className="bg-gradient-to-br from-purple-50/90 to-pink-50/90 dark:from-purple-900/90 dark:to-pink-900/90 backdrop-blur-sm border border-purple-200/50 dark:border-purple-700/50 rounded-2xl p-4 sm:p-6 shadow-xl h-full relative">
                   <div className="flex items-center mb-3 sm:mb-4">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                       <span className="text-white text-sm sm:text-base">🙏</span>
@@ -323,6 +394,17 @@ export default function Home() {
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
                     {day.prayer}
                   </p>
+                  
+                  {/* Share Button */}
+                  <button
+                    onClick={() => shareContent('Prayer', day.prayer)}
+                    className="absolute bottom-4 left-4 flex items-center justify-center w-8 h-8 bg-purple-500 hover:bg-purple-600 text-white rounded-full transition-colors duration-200 shadow-md hover:shadow-lg"
+                    title="Share this prayer"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
